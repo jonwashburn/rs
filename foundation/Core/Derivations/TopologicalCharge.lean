@@ -12,6 +12,7 @@ import Mathlib.Data.Nat.Prime.Defs
 namespace RecognitionScience.Core.Derivations
 
 open Real Nat
+open Classical
 
 /-- Simple definition of Circle for our purposes -/
 def Circle : Type := Unit
