@@ -1,0 +1,16 @@
+name: Lean build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ericwburden/setup-lean@v1
+        with:
+          toolchain: v4.22.0-rc2
+      - name: Build foundation package
+        run: |
+          cd foundation
+          lake build
