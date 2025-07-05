@@ -1,4 +1,0 @@
-import RecognitionScience.EightFoundations
-import RecognitionScience.Constants
-
-open RecognitionScience

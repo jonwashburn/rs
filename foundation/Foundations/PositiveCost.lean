@@ -9,7 +9,7 @@
   Recognition Science Institute
 -/
 
-import RecognitionScience.Core.EightFoundations
+import Core.EightFoundations
 
 namespace RecognitionScience.PositiveCost
 
