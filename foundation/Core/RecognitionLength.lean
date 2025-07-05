@@ -9,7 +9,6 @@
 -/
 
 import Core.MetaPrincipleMinimal
-import Core.BasicReals
 import Foundations.GoldenRatio
 
 namespace Core

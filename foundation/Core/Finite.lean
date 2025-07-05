@@ -1,14 +1,11 @@
 /-
   Core.Finite
   -----------
-  Basic finite-set theory using mathlib.
-  We define a wrapper around mathlib's Fintype for compatibility.
+  Basic finite-set theory self-contained implementation.
+  No external dependencies.
 -/
 
 import Core.Nat.Card
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Fintype.Card
-import Mathlib.Logic.Equiv.Fin.Basic
 
 namespace RecognitionScience
 

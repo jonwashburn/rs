@@ -10,7 +10,7 @@
 -/
 
 import Core.EightFoundations
-import Core.MetaPrinciple
+-- import Core.MetaPrinciple
 
 namespace RecognitionScience.DiscreteTime
 

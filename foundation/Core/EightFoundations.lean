@@ -12,12 +12,21 @@
   Recognition Science Institute
 -/
 
-import Core.MetaPrinciple
+import Core.MetaPrincipleMinimal
 import Core.Arith
 
 namespace RecognitionScience.EightFoundations
 
 open RecognitionScience RecognitionScience.Arith
+open Core.MetaPrincipleMinimal (Recognition MetaPrinciple Nothing)
+
+/-- Physical systems must have finite information capacity -/
+def PhysicallyRealizable (A : Type) : Prop :=
+  Nonempty (RecognitionScience.Finite A)
+
+/-- Something must exist (the logical necessity of existence) -/
+theorem something_exists : ∃ (X : Type) (_ : X), True :=
+  ⟨Unit, (), ⟨⟩⟩
 
 /-!
 # Helper Lemmas for Arithmetic

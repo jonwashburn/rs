@@ -6,10 +6,8 @@
   Everything here is DERIVED, not hardcoded.
 -/
 
-import Core.BasicReals
 import Core.RecognitionLength
 import Core.FundamentalTick
-import Core.MassEnergyCascade
 
 namespace RecognitionScience.Constants
 
