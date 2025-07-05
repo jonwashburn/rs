@@ -1,0 +1,12 @@
+._*
+.lake/
+.cache/
+.DS_Store
+*.ilean
+*.c
+
+# Nested repositories and source material
+ledger-foundation/
+foundation/
+recognition-science-derivations/
+source_code_June-29.txt 
