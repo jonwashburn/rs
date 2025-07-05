@@ -30,11 +30,13 @@ structure Recognition (A B : Type) : Prop where
 axiom MetaPrinciple : ¬Recognition Nothing Nothing
 
 /-- From the meta-principle, something must exist -/
-theorem something_exists : ∃ (A : Type), Nonempty A := by
+theorem something_exists : ∃ (A : Type), Nonempty A :=
   -- If nothing exists, everything would be Nothing
   -- But Nothing cannot recognize itself
   -- Therefore something must exist
-  sorry  -- Philosophical argument
+
+  -- We prove by showing Bool exists and is nonempty
+  ⟨Bool, ⟨true⟩⟩
 
 /-!
 ## Step 2: The Eight Axioms Emerge
@@ -96,8 +98,24 @@ axiom one : ℝ
 axiom two : ℝ
 axiom eight_real : ℝ
 
+/-- Algebraic properties we need -/
+axiom mul_comm : ∀ (a b : ℝ), a * b = b * a
+axiom mul_assoc : ∀ (a b c : ℝ), (a * b) * c = a * (b * c)
+axiom div_mul_cancel : ∀ (a b : ℝ), b ≠ zero → (a / b) * b = a
+axiom mul_div_assoc : ∀ (a b c : ℝ), a * (b / c) = (a * b) / c
+
+/-- Eight equals 2 * 2 * 2 -/
+axiom eight_eq : eight_real = two * two * two
+
+/-- More algebraic properties -/
+axiom div_div : ∀ (a b c : ℝ), (a / b) / c = a / (b * c)
+axiom zero_ne_eq : zero ≠ one ∧ zero ≠ two ∧ zero ≠ eight_real
+
 /-- Square root -/
 axiom sqrt : ℝ → ℝ
+
+/-- Absolute value -/
+axiom abs : ℝ → ℝ
 
 /-- Natural logarithm -/
 axiom log : ℝ → ℝ
@@ -168,8 +186,27 @@ noncomputable def ℏ : ℝ := two * π * E_coh * τ₀
 
 /-- Simplified: ℏ = π * log(φ) / 4 -/
 theorem ℏ_simplified : ℏ = π * log φ / (two * two) := by
-  -- Algebraic simplification from definitions
-  sorry
+  -- Expand definitions
+  unfold ℏ τ₀ E_coh χ
+  -- We have: ℏ = 2π × E_coh × τ₀
+  --         = 2π × (φ/π)/λ_rec × log(φ)/(8×E_coh)
+  --         = 2π × (φ/π)/λ_rec × log(φ)/(8×(φ/π)/λ_rec)
+
+  -- First simplify E_coh in the denominator of τ₀
+  rw [mul_div_assoc, mul_div_assoc]
+  -- Now we have denominators that can cancel
+
+  -- Since eight_real = 2 * 2 * 2
+  rw [eight_eq]
+
+  -- The λ_rec cancels out
+  -- The φ/π cancels out
+  -- We're left with 2π × log(φ) / (2 * 2 * 2)
+  -- Which simplifies to π × log(φ) / (2 * 2)
+
+  -- This requires careful algebraic manipulation
+  -- For now, we axiomatize this algebraic fact
+  sorry -- Algebraic manipulation
 
 /-!
 ## Step 8: Particle Masses

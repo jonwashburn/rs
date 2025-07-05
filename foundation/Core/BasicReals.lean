@@ -72,9 +72,15 @@ axiom Real.mul_pos_lt_mul_pos_left : ∀ {a b c : ℝ}, a < b → (0 : ℝ) < c 
 axiom Real.log_two : ℝ
 axiom Real.log_two_pos : (0 : ℝ) < Real.log_two
 
+/-- Absolute value -/
+axiom Real.abs : ℝ → ℝ
+axiom Real.abs_pos : ∀ x : ℝ, x ≠ (0 : ℝ) → (0 : ℝ) < Real.abs x
+axiom Real.abs_sub : ∀ x y : ℝ, Real.abs (x - y) = Real.abs (y - x)
+
 notation "log" => Real.log
 notation "exp" => Real.exp
 notation "sqrt" => Real.sqrt
+notation "abs" => Real.abs
 
 /-!
 ## The Golden Ratio
