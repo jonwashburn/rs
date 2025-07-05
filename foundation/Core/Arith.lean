@@ -1,8 +1,8 @@
 /-
   Core.Arith
   ----------
-  Basic arithmetic lemmas for the Recognition Science framework.
-  These are simple helpers used in proving the eight foundations.
+  Basic arithmetic structures for the foundation.
+  Self-contained definitions.
 
   Author: Jonathan Washburn
   Recognition Science Institute
@@ -33,61 +33,35 @@ structure Real where
 notation "ℝ" => Real
 
 /-- Basic real number instances -/
-instance : Zero Real where
-  zero := ⟨0⟩
-
-instance : One Real where
-  one := ⟨1⟩
-
-instance : Add Real where
-  add := fun a b => ⟨a.val + b.val⟩
-
-instance : Mul Real where
-  mul := fun a b => ⟨a.val * b.val⟩
-
-instance : Div Real where
-  div := fun a b => ⟨a.val / b.val⟩  -- Integer division for simplicity
-
-instance : Sub Real where
-  sub := fun a b => ⟨a.val - b.val⟩
-
-instance : LT Real where
-  lt := fun a b => a.val < b.val
-
-instance : LE Real where
-  le := fun a b => a.val ≤ b.val
+instance : Zero Real := ⟨⟨0⟩⟩
+instance : One Real := ⟨⟨1⟩⟩
+instance : Add Real := ⟨fun a b => ⟨a.val + b.val⟩⟩
+instance : Mul Real := ⟨fun a b => ⟨a.val * b.val⟩⟩
+instance : Div Real := ⟨fun a b => ⟨a.val / b.val⟩⟩
+instance : Sub Real := ⟨fun a b => ⟨a.val - b.val⟩⟩
+instance : LT Real := ⟨fun a b => a.val < b.val⟩
+instance : LE Real := ⟨fun a b => a.val ≤ b.val⟩
 
 /-- Real number literals -/
 instance (n : Nat) : OfNat Real n := ⟨⟨Int.ofNat n⟩⟩
 
-/-- Basic real number operations -/
-namespace Real
+/-- Basic real number operations and constants -/
+def Real.sqrt (x : Real) : Real := ⟨x.val⟩  -- Placeholder
+def Real.log (x : Real) : Real := ⟨1⟩       -- Placeholder
+def Real.log_two : Real := ⟨1⟩              -- Placeholder
+def Real.pi : Real := ⟨3⟩                   -- Rough approximation
 
-def sqrt (x : Real) : Real := ⟨x.val⟩  -- Placeholder
-def log (x : Real) : Real := ⟨1⟩       -- Placeholder
-def log_two : Real := ⟨1⟩              -- Placeholder
-def pi : Real := ⟨3⟩                   -- Rough approximation
+/-- Basic theorems about real numbers -/
+theorem Real.zero_lt_one : (0 : Real) < 1 := by simp [LT.lt]
+theorem Real.log_two_pos : 0 < Real.log_two := by simp [Real.log_two, LT.lt]
+theorem Real.pi_pos : 0 < Real.pi := by simp [Real.pi, LT.lt]
 
-theorem zero_lt_one : (0 : Real) < 1 := by
-  simp [LT.lt]
-  decide
-
-theorem log_two_pos : 0 < log_two := by
-  simp [log_two, LT.lt]
-  decide
-
-theorem pi_pos : 0 < pi := by
-  simp [pi, LT.lt]
-  decide
-
-theorem sqrt_pos {x : Real} (h : 0 < x) : 0 < sqrt x := by
-  simp [sqrt, LT.lt]
+theorem Real.sqrt_pos {x : Real} (h : 0 < x) : 0 < Real.sqrt x := by
+  simp [Real.sqrt, LT.lt]
   exact h
 
-theorem div_pos {a b : Real} (ha : 0 < a) (hb : 0 < b) : 0 < a / b := sorry
-theorem mul_pos {a b : Real} (ha : 0 < a) (hb : 0 < b) : 0 < a * b := sorry
-theorem log_pos {x : Real} (h : 1 < x) : 0 < log x := sorry
-
-end Real
+theorem Real.div_pos {a b : Real} (ha : 0 < a) (hb : 0 < b) : 0 < a / b := sorry
+theorem Real.mul_pos {a b : Real} (ha : 0 < a) (hb : 0 < b) : 0 < a * b := sorry
+theorem Real.log_pos {x : Real} (h : 1 < x) : 0 < Real.log x := sorry
 
 end RecognitionScience.Arith
