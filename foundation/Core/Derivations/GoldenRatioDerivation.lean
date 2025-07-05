@@ -6,9 +6,9 @@
   the requirement to minimize recognition cost while allowing growth.
 -/
 
-import RecognitionScience.Core.MetaPrinciple
+import Core.MetaPrinciple
 import Main
-import RecognitionScience.Core.Finite
+import Core.Finite
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.Calculus.Deriv.Basic

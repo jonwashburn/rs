@@ -20,3 +20,15 @@ package RecognitionScience where
 lean_lib RecognitionScience where
   -- All modules are part of the RecognitionScience library
   globs := #[.submodules `RecognitionScience]
+
+lean_lib Core where
+  -- Core derivations
+  globs := #[.submodules `Core]
+
+lean_lib Foundations where
+  -- Foundation implementations
+  globs := #[.submodules `Foundations]
+
+lean_lib Parameters where
+  -- Constants and parameters
+  globs := #[.submodules `Parameters]

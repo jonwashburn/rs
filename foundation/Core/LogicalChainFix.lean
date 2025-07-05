@@ -6,8 +6,8 @@
   to "time is discrete" without justification. This file provides the missing steps.
 -/
 
-import RecognitionScience.Core.MetaPrinciple
-import RecognitionScience.Core.Finite
+import Core.MetaPrinciple
+import Core.Finite
 
 namespace RecognitionScience.LogicalChain
 

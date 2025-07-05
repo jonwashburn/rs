@@ -9,11 +9,12 @@
   Recognition Science Institute
 -/
 
-import RecognitionScience.Core.EightFoundations
+import Core.EightFoundations
 
 namespace RecognitionScience.GoldenRatio
 
 open RecognitionScience
+open RecognitionScience.EightFoundations
 
 /-- Simple rational numbers as pairs of integers -/
 structure SimpleRat where

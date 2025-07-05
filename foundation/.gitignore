@@ -16,4 +16,20 @@ lake-packages/
 .vscode/
 
 # Lake manifest (can be regenerated)
-lake-manifest.json 
+lake-manifest.json
+
+# macOS resource fork files
+._*
+.DS_Store
+
+# Additional rules
+*.trace
+*.ipynb_checkpoints/
+*.leanpkg
+*.tmp
+*.bk
+flycheck_*
+lakefile.lean.bak
+*#
+*.sw?
+.lake 

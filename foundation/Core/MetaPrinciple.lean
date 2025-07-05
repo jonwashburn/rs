@@ -9,9 +9,9 @@
   Recognition Science Institute
 -/
 
-import RecognitionScience.Core.Kernel
-import RecognitionScience.Core.Finite
-import RecognitionScience.Core.Nat.Card
+import Core.Kernel
+import Core.Finite
+import Core.Nat.Card
 
 namespace Core.MetaPrinciple
 
