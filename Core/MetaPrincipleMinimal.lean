@@ -38,11 +38,8 @@ def MetaPrinciple : Prop :=
 
 /-- The meta-principle holds by the very nature of nothingness -/
 theorem meta_principle_holds : MetaPrinciple := by
-  -- We need to show that ¬∃ r, True, i.e., there is no Recognition Nothing Nothing
-  intro h
-  -- h : ∃ r, True means there exists some r : Recognition Nothing Nothing
-  obtain ⟨rec, _⟩ := h
-  -- But rec.recognizer has type Nothing, which has no inhabitants
-  nomatch rec.recognizer
+  intro ⟨r, _⟩
+  -- r.recognizer has type Nothing, which has no inhabitants
+  cases r.recognizer
 
 end Core.MetaPrincipleMinimal

@@ -1,19 +1,18 @@
 /-
   Core.Finite
   -----------
-  Self-contained finite-set theory for Recognition Science.
-  Built from first principles without external dependencies.
-
-  Author: Jonathan Washburn
-  Recognition Science Institute
+  Basic finite-set theory using mathlib.
+  We define a wrapper around mathlib's Fintype for compatibility.
 -/
 
-import Core.Nat.Card
+import RecognitionScience.Core.Nat.Card
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Data.Fintype.Card
+import Mathlib.Logic.Equiv.Fin.Basic
 
 namespace RecognitionScience
 
 open Function
-open RecognitionScience.Nat.Card
 
 /-- The empty type represents absolute nothingness -/
 inductive Nothing : Type where
@@ -27,6 +26,9 @@ structure Finite (A : Type) : Type where
   fromFin : Fin n → A
   left_inv : ∀ a : A, fromFin (toFin a) = a
   right_inv : ∀ f : Fin n, toFin (fromFin f) = f
+
+-- Note: Conversion from Fintype to Finite would require Fintype.equivFin
+-- which needs additional setup. For now, we work directly with our Finite structure.
 
 /-- Any empty type is finite (with `n = 0`). -/
 instance finiteNothing : Finite Nothing where
@@ -95,11 +97,6 @@ instance finiteBool : Finite Bool where
       rw [this]
       simp
 
-/-- Helper: Create an equivalence structure -/
-def mkEquiv {α β : Type} (f : α → β) (g : β → α)
-  (left : ∀ a, g (f a) = a) (right : ∀ b, f (g b) = b) : Equiv α β :=
-  ⟨f, g, left, right⟩
-
 /-- Helper: The cardinality of a finite type is unique -/
 theorem card_unique {A : Type} (h1 h2 : Finite A) : h1.n = h2.n := by
   -- If A ≃ Fin n and A ≃ Fin m, then Fin n ≃ Fin m, so n = m
@@ -130,7 +127,12 @@ theorem card_unique {A : Type} (h1 h2 : Finite A) : h1.n = h2.n := by
 
   -- Now we have a bijection between Fin h1.n and Fin h2.n
   -- Use the theorem from Nat.Card
-  have equiv : Equiv (Fin h1.n) (Fin h2.n) := mkEquiv f g gf_inv fg_inv
-  exact bij_fin_eq equiv
+  have : Fin h1.n ≃ Fin h2.n := {
+    toFun := f
+    invFun := g
+    left_inv := gf_inv
+    right_inv := fg_inv
+  }
+  exact Nat.Card.bij_fin_eq this
 
 end RecognitionScience

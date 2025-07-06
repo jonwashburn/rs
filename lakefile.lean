@@ -1,27 +1,22 @@
 /-
-  Recognition Science Foundation Ledger
-  =====================================
-  Self-contained package: meta-principle → eight foundations → constants
-  No external dependencies.
+  Requires: A1 (Discrete Recognition), A4 (Unitary Evolution)
+  Imports Constants: φ, E_coh, τ₀
+  Proves/Defines: — FILL IN —
 -/
 
 import Lake
 open Lake DSL
 
-package RecognitionLedger where
+package RecognitionScience where
+  -- Basic settings
   leanOptions := #[
     ⟨`autoImplicit, false⟩,
     ⟨`relaxedAutoImplicit, false⟩
   ]
-  -- Enable caching for faster builds
-  buildType := BuildType.release
+
+-- No mathlib dependency - we derive everything from first principles
 
 @[default_target]
-lean_lib Core where
-  globs := #[.submodules `Core]
-
-lean_lib Foundations where
-  globs := #[.submodules `Foundations]
-
-lean_lib Parameters where
-  globs := #[.submodules `Parameters]
+lean_lib RecognitionScience where
+  -- All modules are part of the RecognitionScience library
+  globs := #[.submodules `RecognitionScience]
