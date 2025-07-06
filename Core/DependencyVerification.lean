@@ -133,7 +133,7 @@ example : meta_principle_holds → (∃ φ E τ : ℝ, φ > 1 ∧ E > 0 ∧ τ >
   use φ_val, E_val, τ_val
   constructor
   · -- Need to prove φ > 1 from φ^2 = φ + 1 and φ > 0
-    sorry -- This requires the full φ_gt_one proof
+    exact φ_gt_one
   exact ⟨h_E_pos, h_τ_pos, h_golden⟩
 
 /-!

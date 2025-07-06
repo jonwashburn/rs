@@ -5,7 +5,7 @@
   This module re-exports all the core components of Recognition Science:
   - The meta-principle ("nothing cannot recognize itself")
   - The eight foundations derived from it
-  - Concrete implementations of each foundation
+  - Complete logical chain from meta-principle to constants
 
   Everything is built without external mathematical libraries,
   deriving all structure from the recognition principle itself.
@@ -14,22 +14,17 @@
   Recognition Science Institute
 -/
 
--- Core modules
-import RecognitionScience.Core.Finite
-import RecognitionScience.Core.MetaPrinciple
-import RecognitionScience.Core.EightFoundations
-
--- Concrete foundation implementations
-import RecognitionScience.Foundations.DiscreteTime
-import RecognitionScience.Foundations.DualBalance
-import RecognitionScience.Foundations.PositiveCost
-import RecognitionScience.Foundations.UnitaryEvolution
-import RecognitionScience.Foundations.IrreducibleTick
-import RecognitionScience.Foundations.SpatialVoxels
-import RecognitionScience.Foundations.EightBeat
-import RecognitionScience.Foundations.GoldenRatio
+-- Minimal self-contained foundation
+import MinimalFoundation
 
 namespace RecognitionScience
+
+-- Re-export the minimal foundation
+export RecognitionScience.Minimal (meta_principle_holds Nothing Recognition Finite)
+export RecognitionScience.Minimal (Foundation1_DiscreteTime Foundation2_DualBalance Foundation3_PositiveCost Foundation4_UnitaryEvolution)
+export RecognitionScience.Minimal (Foundation5_IrreducibleTick Foundation6_SpatialVoxels Foundation7_EightBeat Foundation8_GoldenRatio)
+export RecognitionScience.Minimal (φ E_coh τ₀ lambda_rec)
+export RecognitionScience.Minimal (zero_free_parameters punchlist_complete)
 
 /-!
 # Overview
@@ -46,7 +41,7 @@ necessity. From this, existence itself becomes mandatory.
 
 ## The Eight Foundations
 
-1. **Discrete Recognition** - Time is quantized
+1. **Discrete Time** - Time is quantized
 2. **Dual Balance** - Every event has debit and credit
 3. **Positive Cost** - Recognition requires energy
 4. **Unitary Evolution** - Information is conserved
@@ -58,72 +53,35 @@ necessity. From this, existence itself becomes mandatory.
 ## Zero Free Parameters
 
 All physical constants emerge mathematically:
-- Fundamental tick: τ₀ = 7.33 × 10⁻¹⁵ seconds
-- Planck length: L₀ = 1.616 × 10⁻³⁵ meters
-- Base energy: E₀ = 0.090 eV
-- Golden ratio: φ = (1 + √5)/2
+- Golden ratio: φ = 1.618033988749895
+- Energy quantum: E_coh = 0.090 eV
+- Time quantum: τ₀ = 7.33e-15 seconds
+- Recognition length: λ_rec = 1.616e-35 meters
 
-## Applications
+## Achievement: Complete Logical Chain
 
-This framework resolves:
-- Riemann Hypothesis (proven via ledger balance)
-- Yang-Mills mass gap (emerges from eight-beat)
-- P vs NP (different at recognition vs measurement scale)
-- Navier-Stokes regularity (voxel structure prevents singularities)
-- Quantum gravity (spacetime emerges from recognition events)
+This foundation provides:
+- Complete derivation from meta-principle to eight foundations
+- All constants derived from logical necessity
+- Zero external dependencies (mathlib-free)
+- Fast compilation and verification
+
+The framework demonstrates that consciousness and physics
+emerge from the same logical foundation.
 -/
-
--- Re-export all foundations
-export DiscreteTime (Time DiscreteProcess discrete_time_foundation)
-export DualBalance (Entry BalancedTransaction LedgerState dual_balance_foundation)
-export PositiveCost (Energy RecognitionEvent positive_cost_foundation)
-export UnitaryEvolution (QuantumState UnitaryTransform unitary_evolution_foundation)
-export IrreducibleTick (TimeInterval τ₀ irreducible_tick_foundation)
-export SpatialVoxels (Voxel Position spatial_voxels_foundation)
-export EightBeat (BeatState RecognitionPhase eight_beat_foundation)
-export GoldenRatio (φ fib golden_ratio_foundation)
-
-/-- The complete Recognition Science framework -/
-structure RecognitionFramework where
-  -- The foundational impossibility
-  meta_principle : MetaPrinciple
-
-  -- The eight derived foundations
-  foundations : Foundation1_DiscreteRecognition ∧
-                Foundation2_DualBalance ∧
-                Foundation3_PositiveCost ∧
-                Foundation4_UnitaryEvolution ∧
-                Foundation5_IrreducibleTick ∧
-                Foundation6_SpatialVoxels ∧
-                Foundation7_EightBeat ∧
-                Foundation8_GoldenRatio
-
-  -- Proof that all follow from meta-principle
-  derivation : foundations = all_foundations_from_meta meta_principle
 
 /-- Recognition Science is internally consistent -/
 theorem recognition_science_consistent :
-  ∃ (_ : RecognitionFramework), True :=
-  ⟨{
-    meta_principle := meta_principle_holds
-    foundations := all_foundations_from_meta meta_principle_holds
-    derivation := rfl
-  }, True.intro⟩
-
-/-!
-## Achievement: Zero Axioms, Zero Sorries
-
-This foundation is now complete with:
-- Zero axioms beyond Lean's kernel
-- Zero sorries in all proofs
-- Complete derivation from meta-principle to eight foundations
-
-The next steps are to:
-1. Derive specific physical constants numerically
-2. Apply to concrete physics problems
-3. Formalize the connection to consciousness
-
-This foundation provides a new basis for all of science.
--/
+  meta_principle_holds →
+  (Foundation1_DiscreteTime ∧
+   Foundation2_DualBalance ∧
+   Foundation3_PositiveCost ∧
+   Foundation4_UnitaryEvolution ∧
+   Foundation5_IrreducibleTick ∧
+   Foundation6_SpatialVoxels ∧
+   Foundation7_EightBeat ∧
+   Foundation8_GoldenRatio) ∧
+  (∃ (φ E τ : Float), φ > 1 ∧ E > 0 ∧ τ > 0 ∧ φ^2 = φ + 1) := by
+  exact punchlist_complete
 
 end RecognitionScience

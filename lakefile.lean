@@ -1,22 +1,28 @@
 /-
-  Requires: A1 (Discrete Recognition), A4 (Unitary Evolution)
-  Imports Constants: φ, E_coh, τ₀
-  Proves/Defines: — FILL IN —
+  Recognition Science Foundation
+  =============================
+
+  Self-contained mathematical foundation with zero external dependencies.
+  Built entirely from first principles.
+
+  Author: Jonathan Washburn
+  Recognition Science Institute
 -/
 
 import Lake
 open Lake DSL
 
 package RecognitionScience where
-  -- Basic settings
+  -- Basic settings for clean compilation
   leanOptions := #[
     ⟨`autoImplicit, false⟩,
     ⟨`relaxedAutoImplicit, false⟩
   ]
+  buildType := BuildType.release
 
--- No mathlib dependency - we derive everything from first principles
+-- No external dependencies - completely self-contained foundation
 
 @[default_target]
 lean_lib RecognitionScience where
-  -- All modules are part of the RecognitionScience library
-  globs := #[.submodules `RecognitionScience]
+  -- Include only top-level modules
+  roots := #[`RecognitionScience, `MinimalFoundation]

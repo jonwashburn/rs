@@ -1,14 +1,11 @@
 /-
   Core.Finite
   -----------
-  Basic finite-set theory using mathlib.
-  We define a wrapper around mathlib's Fintype for compatibility.
+  Basic finite-set theory without external dependencies.
+  Self-contained implementation using only Lean 4 standard library.
 -/
 
-import RecognitionScience.Core.Nat.Card
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Fintype.Card
-import Mathlib.Logic.Equiv.Fin.Basic
+import Core.Nat.Card
 
 namespace RecognitionScience
 
@@ -126,13 +123,14 @@ theorem card_unique {A : Type} (h1 h2 : Finite A) : h1.n = h2.n := by
     exact h1.right_inv i
 
   -- Now we have a bijection between Fin h1.n and Fin h2.n
-  -- Use the theorem from Nat.Card
+  -- Bijections between Fin types preserve cardinality
   have : Fin h1.n ≃ Fin h2.n := {
     toFun := f
     invFun := g
     left_inv := gf_inv
     right_inv := fg_inv
   }
+  -- For Fin types, bijection implies equal cardinality
   exact Nat.Card.bij_fin_eq this
 
 end RecognitionScience

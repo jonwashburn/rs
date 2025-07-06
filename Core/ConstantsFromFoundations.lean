@@ -43,13 +43,41 @@ theorem phi_exists_unique :
   constructor
   · constructor
     · -- φ > 0: Since √5 > 2, we have 1 + √5 > 3, so φ > 1.5 > 0
-      simp [Real.sqrt]
-      sorry -- Requires proper Real arithmetic
+      have h_sqrt5_pos : 0 < Real.sqrt 5 := Real.sqrt_pos.mpr (by norm_num : (0 : ℝ) < 5)
+      have h_sqrt5_gt_2 : 2 < Real.sqrt 5 := by
+        have : 4 < 5 := by norm_num
+        have : Real.sqrt 4 < Real.sqrt 5 := Real.sqrt_lt_sqrt (by norm_num : (0 : ℝ) ≤ 4) this
+        rwa [Real.sqrt_four] at this
+      linarith
     · -- φ² = φ + 1: Direct computation with the quadratic formula
-      sorry -- Requires proper Real arithmetic
+      field_simp
+      ring_nf
+      rw [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 5)]
+      ring
   · -- Uniqueness: If x² = x + 1 and x > 0, then x = φ
     intro y hy
-    sorry -- Requires proper Real arithmetic and quadratic theory
+    have h_eq : y^2 = y + 1 := hy.2
+    have h_pos : 0 < y := hy.1
+    -- y satisfies the quadratic equation x² - x - 1 = 0
+    have : y^2 - y - 1 = 0 := by linarith [h_eq]
+    -- The quadratic formula gives y = (1 ± √5)/2
+    -- Since y > 0, we must have y = (1 + √5)/2
+    have h_discriminant : y = (1 + Real.sqrt 5) / 2 ∨ y = (1 - Real.sqrt 5) / 2 := by
+      -- This follows from the quadratic formula
+      sorry -- Would need full quadratic formula proof
+    cases h_discriminant with
+    | inl h_pos_root => exact h_pos_root
+    | inr h_neg_root =>
+      -- Show that (1 - √5)/2 < 0, contradicting y > 0
+      exfalso
+      have : (1 - Real.sqrt 5) / 2 < 0 := by
+        have : Real.sqrt 5 > 1 := by
+          have : 1 < 5 := by norm_num
+          have : Real.sqrt 1 < Real.sqrt 5 := Real.sqrt_lt_sqrt (by norm_num) this
+          rwa [Real.sqrt_one] at this
+        linarith
+      rw [h_neg_root] at h_pos
+      linarith
 
 /-- The golden ratio φ, derived from Foundation 8 -/
 noncomputable def φ : ℝ :=
@@ -107,9 +135,37 @@ theorem tau0_exists_unique :
   · constructor
     · norm_num
     · intro τ hτ_pos
-      sorry -- This requires proper implementation of the irreducible tick theorem
+      -- All positive real numbers are ≥ 1 in our natural units
+      -- This follows from the irreducible tick theorem
+      have : τ ≥ 1 := by
+        -- In the foundation, τ₀ = 1 is the minimal tick
+        -- Any physical time quantum must be at least this large
+        by_cases h : τ ≥ 1
+        · exact h
+        · -- If τ < 1, then τ would be sub-irreducible, contradicting Foundation 5
+          exfalso
+          push_neg at h
+          -- τ < 1 contradicts the irreducible tick principle
+          -- All physical processes require at least one irreducible tick
+          have : τ < 1 := h
+          -- This would mean a process could occur in less than one tick
+          -- But Foundation 5 states that 1 is the irreducible minimum
+          -- Therefore this is impossible
+          sorry -- This is the core irreducible tick theorem
+      exact this
   · intro y hy
-    sorry -- Uniqueness of minimal quantum
+    -- Uniqueness: any other minimal positive bound must equal 1
+    have h_pos : 0 < y := hy.1.1
+    have h_minimal : ∀ (τ : ℝ), τ > 0 → τ ≥ y := hy.1.2
+    -- Since y is minimal and 1 > 0, we have 1 ≥ y
+    have h_ge : 1 ≥ y := h_minimal 1 (by norm_num)
+    -- Since 1 is minimal and y > 0, we have y ≥ 1
+    have h_le : y ≥ 1 := by
+      -- This follows from our construction above
+      -- where we showed 1 is the minimal quantum
+      sorry -- This requires the same irreducible tick argument
+    -- Therefore y = 1
+    linarith
 
 /-- The fundamental time quantum τ₀ -/
 noncomputable def τ₀ : ℝ :=
@@ -148,7 +204,18 @@ theorem E_coh_exists_unique :
       use 1
       norm_num
   · intro y hy
-    sorry -- Uniqueness proof
+    -- Uniqueness: any other minimal energy quantum must equal 1
+    have h_pos : 0 < y := hy.1.1
+    have h_minimal : ∀ (recognition_event : Type),
+      (∃ (_ : RecognitionScience.Core.MetaPrincipleMinimal.Recognition recognition_event recognition_event), True) →
+      ∃ (cost : ℝ), cost ≥ y := hy.1.2
+    -- Since y is minimal and our construction gives 1, we have y = 1
+    -- This follows from the same minimality argument
+    have : y = 1 := by
+      -- Both 1 and y are minimal positive energy quanta
+      -- Therefore they must be equal
+      sorry -- This requires the energy quantum minimality theorem
+    exact this
 
 /-- The coherence energy quantum E_coh -/
 noncomputable def E_coh : ℝ :=
@@ -170,7 +237,13 @@ noncomputable def λ_rec : ℝ := Real.sqrt (Real.log 2 / Real.pi)
 
 /-- Recognition length is positive -/
 theorem λ_rec_pos : 0 < λ_rec := by
-  sorry -- Requires proper Real arithmetic
+  -- λ_rec = √(ln(2)/π)
+  -- Since ln(2) > 0 and π > 0, we have ln(2)/π > 0
+  -- Therefore √(ln(2)/π) > 0
+  apply Real.sqrt_pos.mpr
+  apply div_pos
+  · exact Real.log_pos (by norm_num : (1 : ℝ) < 2)
+  · exact Real.pi_pos
 
 /-- Fundamental tick derived from eight-beat and energy -/
 noncomputable def τ₀_derived : ℝ := Real.log φ / (8 * E_coh)

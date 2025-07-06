@@ -8,7 +8,7 @@
   Recognition Science Institute
 -/
 
-import RecognitionScience.Core.Finite
+import Core.Finite
 
 namespace RecognitionScience.Arith
 
