@@ -1,6 +1,6 @@
 ._*
 .lake/
-.cache/
+.cache/ 
 .DS_Store
 *.ilean
 *.c

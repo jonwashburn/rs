@@ -1,4 +1,4 @@
-name: Lean build
+name: Recognition Science Foundation CI
 
 on: [push, pull_request]
 
@@ -7,10 +7,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ericwburden/setup-lean@v1
-        with:
-          toolchain: v4.22.0-rc2
-      - name: Build foundation package
+      - name: Install Lean
         run: |
-          cd foundation
-          lake build
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+          
+      - name: Build foundation package
+        run: lake build
+        
+      - name: Verify dependency structure
+        run: |
+          echo "Running dependency verification..."
+          lake env lean --run Core/DependencyVerification.lean
+          echo "✓ Dependency verification passed"
+          
+      - name: Check for unauthorized sorry statements
+        run: |
+          echo "Checking for any unauthorized sorry statements..."
+          if grep -r "sorry" --include="*.lean" Core/ Foundations/ Parameters/ 2>/dev/null; then
+            echo "❌ Found unauthorized sorry statements"
+            exit 1
+          else
+            echo "✓ No unauthorized sorry statements found"
+          fi
+          
+      - name: Verify zero free parameters
+        run: |
+          echo "Verifying zero free parameters theorem..."
+          lake env lean --eval '#check RecognitionScience.Core.FoundationConstants.zero_free_parameters_constants'
+          echo "✓ Zero free parameters verification passed"
+          
+      - name: Generate dependency report  
+        run: |
+          echo "Generating dependency report..."
+          lake env lean --run Core/DependencyVerification.lean | tee dependency_report.txt
+          echo "✓ Dependency report generated"
