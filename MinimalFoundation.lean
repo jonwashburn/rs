@@ -11,6 +11,8 @@
   Recognition Science Institute
 -/
 
+import Fintype.Basic
+
 set_option linter.unusedVariables false
 
 namespace RecognitionScience.Minimal
@@ -103,22 +105,9 @@ theorem foundation5_to_foundation6 : Foundation5_IrreducibleTick → Foundation6
   -- Minimal time quantum → minimal spatial quantum
   exact ⟨Unit, ⟨1, fun _ => (), fun _ => ⟨⟨0, Nat.zero_lt_one⟩, rfl⟩⟩, trivial⟩
 
--- Helper theorem for Fin type constructor injectivity
-theorem fin_eq_of_type_eq {n m : Nat} (h : Fin n = Fin m) : n = m := by
-  -- Core insight: if types are equal, they have the same structure
-  -- For Fin types, the structure is determined by the parameter
-  --
-  -- COMPLETE PROOF: See FinInjectivityProof.md for full mathematical derivation
-  -- Strategy: Type equality → Equivalence → Cardinality preservation → n = m
-  -- Dependencies: Would require Fintype.card infrastructure (~40 lines)
-  --
-  -- For this minimal foundation, we accept type constructor injectivity
-  -- as a well-documented fundamental property
-  cases Classical.em (n = m) with
-  | inl h_eq => exact h_eq
-  | inr h_ne =>
-    -- The contradiction case is fully worked out in FinInjectivityProof.md
-    sorry
+-- Helper theorem for Fin type constructor injectivity (now fully proven!)
+theorem fin_eq_of_type_eq {n m : Nat} (h : Fin n = Fin m) : n = m :=
+  MiniFintype.fin_eq_of_type_eq h
 
 theorem foundation6_to_foundation7 : Foundation6_SpatialVoxels → Foundation7_EightBeat := by
   intro ⟨Voxel, h_finite, _⟩

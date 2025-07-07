@@ -25,4 +25,4 @@ package RecognitionScience where
 @[default_target]
 lean_lib RecognitionScience where
   -- Include top-level modules
-  roots := #[`RecognitionScience, `MinimalFoundation]
+  roots := #[`RecognitionScience, `MinimalFoundation, `Fintype.Basic]
