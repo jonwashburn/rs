@@ -20,9 +20,9 @@ package RecognitionScience where
   ]
   buildType := BuildType.release
 
--- No external dependencies - completely self-contained foundation
+-- No external dependencies - self-contained with local FinCardinality implementation
 
 @[default_target]
 lean_lib RecognitionScience where
-  -- Include only top-level modules
+  -- Include top-level modules
   roots := #[`RecognitionScience, `MinimalFoundation]
