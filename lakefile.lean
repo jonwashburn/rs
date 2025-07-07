@@ -25,4 +25,6 @@ package RecognitionScience where
 @[default_target]
 lean_lib RecognitionScience where
   -- Include top-level modules
-  roots := #[`RecognitionScience, `MinimalFoundation, `Fintype.Basic]
+          roots := #[`RecognitionScience, `MinimalFoundation, `Fintype.Basic,
+              `Core.Physics.MassGap, `Core.Physics.RungGap,
+               `YangMillsDemo]
