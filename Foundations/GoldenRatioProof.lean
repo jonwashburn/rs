@@ -25,6 +25,47 @@ open RecognitionScience.Foundations.ScaleOperator
 open RecognitionScience.Foundations.CostFunctional
 
 /-!
+## Quadratic Equation Helper
+-/
+
+/-- Standard fact: The quadratic equation x² - x - 1 = 0 has exactly two solutions -/
+lemma quadratic_solutions_unique (x : ℝ) (h : x^2 - x - 1 = 0) :
+  x = (1 + Real.sqrt 5) / 2 ∨ x = (1 - Real.sqrt 5) / 2 := by
+  -- Use the quadratic formula for ax² + bx + c = 0: x = (-b ± √(b² - 4ac)) / (2a)
+  -- For x² - x - 1 = 0, we have a = 1, b = -1, c = -1
+  -- So x = (1 ± √(1 + 4)) / 2 = (1 ± √5) / 2
+
+  -- Rearrange to standard form
+  have h_standard : x^2 - x - 1 = 0 := h
+
+  -- Complete the square or use quadratic formula
+  -- x² - x - 1 = 0 ⟺ x² - x = 1 ⟺ x² - x + 1/4 = 5/4 ⟺ (x - 1/2)² = 5/4
+  have h_complete : (x - 1/2)^2 = 5/4 := by
+    have : x^2 - x + 1/4 = (x - 1/2)^2 := by ring
+    rw [← this]
+    linarith [h_standard]
+
+  -- Take square root of both sides
+  have h_sqrt : x - 1/2 = Real.sqrt (5/4) ∨ x - 1/2 = -Real.sqrt (5/4) := by
+    exact Real.sq_eq_iff.mp h_complete
+
+  -- Simplify √(5/4) = √5/2
+  have h_sqrt_simp : Real.sqrt (5/4) = Real.sqrt 5 / 2 := by
+    rw [Real.sqrt_div (by norm_num)]
+    simp [Real.sqrt_four]
+
+  -- Solve for x
+  cases' h_sqrt with h_pos h_neg
+  · -- Case: x - 1/2 = √5/2
+    left
+    rw [h_sqrt_simp] at h_pos
+    linarith [h_pos]
+  · -- Case: x - 1/2 = -√5/2
+    right
+    rw [h_sqrt_simp] at h_neg
+    linarith [h_neg]
+
+/-!
 ## Main Consolidation Theorem
 -/
 
@@ -134,7 +175,7 @@ theorem eight_beat_forces_golden_ratio :
         have h_solutions : a = phi_pos ∨ a = phi_neg := by
           -- This would require a general theorem about quadratic solutions
           -- For now, we use the fact that these are the only two solutions
-          sorry -- Standard fact: quadratic equation has exactly two solutions
+          exact quadratic_solutions_unique a ha_quad
         cases' h_solutions with h1 h2
         · exact h_ne h1
         · rw [h2] at ha_gt1
@@ -144,7 +185,7 @@ theorem eight_beat_forces_golden_ratio :
       have hb_is_pos : b = phi_pos := by
         by_contra h_ne
         have h_solutions : b = phi_pos ∨ b = phi_neg := by
-          sorry -- Same reasoning as above
+          exact quadratic_solutions_unique b hb_quad
         cases' h_solutions with h1 h2
         · exact h_ne h1
         · rw [h2] at hb_gt1
