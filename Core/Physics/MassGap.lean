@@ -28,7 +28,7 @@ open RecognitionScience.Minimal
 -/
 
 /-- The Yang-Mills mass gap -/
-noncomputable def massGap : Float := E_coh * φ
+def massGap : Float := E_coh * φ
 
 /-- Alternative expression using the numerical values -/
 def massGap_numerical : Float := 0.090 * 1.618033988749895
@@ -61,17 +61,12 @@ theorem mass_gap_formula : massGap = E_coh * φ := rfl
 
 /-- Mass gap is positive -/
 theorem mass_gap_positive : massGap > 0 := by
-  unfold massGap
-  -- E_coh > 0 and φ > 0, so their product is positive
-  -- We'll use the concrete numerical values directly
-  have h_phi_value : φ = 1.618033988749895 := φ_numerical_value
-  rw [h_phi_value]
-  unfold E_coh
-  -- Now we have 0.090 * 1.618033988749895 > 0
+  -- massGap = E_coh * φ = 0.090 * 1.618... > 0
+  -- This is a computational fact from positive Float arithmetic
   native_decide
 
 /-- Minimal gauge loop cost (conceptual) -/
-noncomputable def minimal_loop_cost : Float := 0.01  -- Placeholder for E_coh / φ³
+def minimal_loop_cost : Float := 0.01  -- Placeholder for E_coh / φ³
 
 /-- Physical mass emerges from renormalization -/
 theorem physical_mass_from_theory :
@@ -83,7 +78,7 @@ theorem phi_ladder_condition :
   ∀ n : Nat, ∃ (state : Type), ∃ (mass : Float), mass > 0 := by
   intro n
   -- Each rung n on the φ-ladder corresponds to a physical state
-  exact ⟨Unit, E_coh, by native_decide⟩
+  exact ⟨Unit, E_coh, by native_decide⟩ -- Computational: E_coh > 0
 
 /-- Mass gap represents the first excited rung -/
 theorem mass_gap_first_rung : massGap = E_coh * φ := rfl
@@ -97,14 +92,11 @@ theorem gauge_invariance_constraint :
 
 /-- Numerical evaluation -/
 theorem mass_gap_numerical_value : massGap = massGap_numerical := by
-  unfold massGap massGap_numerical
-  -- massGap = E_coh * φ = 0.090 * φ
+  unfold massGap massGap_numerical E_coh
+  -- massGap = 0.090 * φ
   -- massGap_numerical = 0.090 * 1.618033988749895
   -- These are equal when φ = 1.618033988749895
-  congr 1
-  -- Show that φ = 1.618033988749895 (the Float approximation)
-  -- This follows from the φ_numerical_value theorem in MinimalFoundation.lean
-  exact φ_numerical_value
+  rw [φ_numerical_value]
 
 /-!
 ## Export for Yang-Mills Proof
