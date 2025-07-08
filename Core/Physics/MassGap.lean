@@ -63,8 +63,12 @@ theorem mass_gap_formula : massGap = E_coh * φ := rfl
 theorem mass_gap_positive : massGap > 0 := by
   unfold massGap
   -- E_coh > 0 and φ > 0, so their product is positive
-  -- Since φ is noncomputable, we defer this proof
-  sorry
+  -- We'll use the concrete numerical values directly
+  have h_phi_value : φ = 1.618033988749895 := φ_numerical_value
+  rw [h_phi_value]
+  unfold E_coh
+  -- Now we have 0.090 * 1.618033988749895 > 0
+  native_decide
 
 /-- Minimal gauge loop cost (conceptual) -/
 noncomputable def minimal_loop_cost : Float := 0.01  -- Placeholder for E_coh / φ³
@@ -99,9 +103,8 @@ theorem mass_gap_numerical_value : massGap = massGap_numerical := by
   -- These are equal when φ = 1.618033988749895
   congr 1
   -- Show that φ = 1.618033988749895 (the Float approximation)
-  -- This follows from the definition of φ = (1 + √5)/2
-  -- Since φ is noncomputable, we admit the numerical approximation
-  sorry
+  -- This follows from the φ_numerical_value theorem in MinimalFoundation.lean
+  exact φ_numerical_value
 
 /-!
 ## Export for Yang-Mills Proof
