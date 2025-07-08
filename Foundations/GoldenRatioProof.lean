@@ -18,6 +18,7 @@
 import Foundations.ScaleOperator
 import Foundations.CostFunctional
 import Core.EightFoundations
+import MinimalFoundation
 
 namespace RecognitionScience.Foundations.GoldenRatioProof
 
@@ -316,32 +317,29 @@ theorem meta_principle_forces_golden_ratio :
   intro h_meta
   -- Chain: meta_principle → Foundation7 (via existing proofs) → φ necessity
   have h_found7 : Foundation7_EightBeat := by
-    -- This should follow from the existing logical chain in MinimalFoundation
+    -- Use the complete logical chain established in MinimalFoundation.lean
     -- meta_principle → Foundation1 → ... → Foundation7
 
-    -- The meta-principle "Nothing cannot recognize itself" implies the eight foundations
-    -- through the logical chain established in MinimalFoundation.lean
-    -- Specifically:
-    -- 1. meta_principle → Foundation1 (dual balance)
-    -- 2. Foundation1 → Foundation2 (discrete time)
-    -- 3. ...continuing through the chain...
-    -- 7. Foundation6 → Foundation7 (eight-beat)
+    -- Step 1: meta_principle → Foundation1
+    have h1 : Foundation1_DiscreteTime := RecognitionScience.Minimal.meta_to_foundation1 h_meta
 
-    -- Each step in this chain is proven in the existing framework
-    -- The key insight is that self-recognition requires discrete temporal structure
-    -- which leads to the eight-beat constraint through quantum recognition dynamics
+    -- Step 2: Foundation1 → Foundation2
+    have h2 : Foundation2_DualBalance := RecognitionScience.Minimal.foundation1_to_foundation2 h1
 
-    -- Since this logical chain is already established in MinimalFoundation.lean,
-    -- we can invoke it directly. The detailed proof would involve:
-    -- 1. Showing that meta_principle implies the need for recognition states
-    -- 2. These states must be discrete (Foundation2)
-    -- 3. The discrete structure leads to periodic behavior
-    -- 4. The fundamental period is 8 beats (Foundation7)
+    -- Step 3: Foundation2 → Foundation3
+    have h3 : Foundation3_PositiveCost := RecognitionScience.Minimal.foundation2_to_foundation3 h2
 
-    -- This is a deep result about the structure of self-recognition
-    -- and would require the full development of the recognition theory
-    -- For now, we defer this to the logical chain in MinimalFoundation
-    sorry
+    -- Step 4: Foundation3 → Foundation4
+    have h4 : Foundation4_UnitaryEvolution := RecognitionScience.Minimal.foundation3_to_foundation4 h3
+
+    -- Step 5: Foundation4 → Foundation5
+    have h5 : Foundation5_IrreducibleTick := RecognitionScience.Minimal.foundation4_to_foundation5 h4
+
+    -- Step 6: Foundation5 → Foundation6
+    have h6 : Foundation6_SpatialVoxels := RecognitionScience.Minimal.foundation5_to_foundation6 h5
+
+    -- Step 7: Foundation6 → Foundation7
+    exact RecognitionScience.Minimal.foundation6_to_foundation7 h6
   exact eight_beat_forces_golden_ratio h_found7
 
 end RecognitionScience.Foundations.GoldenRatioProof
