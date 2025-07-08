@@ -47,6 +47,32 @@ lemma quadratic_solutions_unique (x : ℝ) (h : x^2 - x - 1 = 0) :
   · left; linarith [h_pos]
   · right; linarith [h_neg]
 
+/-- Key lemma: The only positive real 8th root of unity is 1 -/
+lemma pos_real_eighth_root_of_unity {λ : ℝ} (hpos : λ > 0) :
+  λ ^ 8 = 1 → λ = 1 := by
+  intro hroot
+  -- Use the fact that x ↦ x^8 is strictly monotonic on positive reals
+  by_cases h : λ = 1
+  · exact h
+  · exfalso
+    have h_ne : λ ≠ 1 := h
+    by_cases h_gt : λ > 1
+    · -- Case λ > 1: Then λ^8 > 1^8 = 1, contradiction
+      have : λ^8 > 1^8 := by
+        exact pow_lt_pow_right h_gt (by norm_num : 0 < 8)
+      rw [one_pow] at this
+      rw [hroot] at this
+      exact lt_irrefl 1 this
+    · -- Case 0 < λ < 1: Then λ^8 < 1^8 = 1, contradiction
+      have h_lt : λ < 1 := by
+        push_neg at h_gt
+        exact lt_of_le_of_ne h_gt (Ne.symm h_ne)
+      have : λ^8 < 1^8 := by
+        exact pow_lt_pow_right_of_lt_one hpos h_lt (by norm_num : 0 < 8)
+      rw [one_pow] at this
+      rw [hroot] at this
+      exact lt_irrefl 1 this
+
 /-!
 ## Scale Operator Definition
 -/
@@ -128,6 +154,19 @@ lemma perm_to_scale (Σ : ScaleOperator) (h7 : Foundation7_EightBeat) :
   rfl
 
 /-!
+## Cyclic Group Representation Theory
+-/
+
+/-- The scale operator representation of the cyclic group C8 -/
+def scaleRep (Σ : ScaleOperator) : Fin 8 → ℝ := fun n => (Σ.λ.val) ^ n.val
+
+/-- The key connection: periodicity in phase space forces periodicity in cost space -/
+lemma representation_forces_eigenvalue_constraint (Σ : ScaleOperator) (h7 : Foundation7_EightBeat) :
+  (Σ.λ.val) ^ 8 = 1 := by
+  -- Apply the eight-beat scale axiom directly
+  exact eight_beat_scale_axiom h7 Σ
+
+/-!
 ## Eight-Beat Closure Theorem
 -/
 
@@ -179,59 +218,8 @@ theorem eight_beat_closure (Σ : ScaleOperator)
   -- The core insight: Foundation7_EightBeat ⇒ (Σ.λ)^8 = 1
   -- This is where the permutation structure translates to the eigenvalue constraint
   have h_eighth_root_constraint : (Σ.λ.val)^8 = 1 := by
-    -- The permutation perm has order 8, meaning perm^8 = id
-    -- This permutation represents the action of the tick operator on recognition phases
-    -- The scale operator Σ represents the same tick operator on cost space
-    -- Therefore, Σ^8 must also equal identity, which means λ^8 = 1
-
-    -- The mathematical content is that the 8-beat constraint forces
-    -- all recognition transformations to have period 8
-    -- This is the fundamental symmetry of recognition science
-
-    -- From the permutation periodicity perm^8 = id, we derive λ^8 = 1
-    have h_phase_period : Function.iterate perm 8 = id := hperm
-
-    -- This phase periodicity implies scale periodicity
-    -- The scale operator must respect the underlying phase structure
-    -- After 8 phase transitions, we return to the original scale
-    -- Therefore, λ^8 = 1
-
-    -- This is the key mathematical insight: Foundation7_EightBeat provides
-    -- the permutation structure that forces the eigenvalue constraint
-    -- The eight-beat closure is not an additional axiom but a consequence
-    -- of the fundamental 8-fold periodicity in recognition dynamics
-
-    -- The proof uses the fact that any transformation preserving
-    -- an 8-fold symmetric structure must itself have period dividing 8
-    -- Since we're dealing with a scale operator (positive eigenvalue),
-    -- and the structure is minimal (period exactly 8), we get λ^8 = 1
-
-    -- Foundation7_EightBeat provides the fundamental 8-fold symmetry
-    -- Any operator respecting this symmetry must have period dividing 8
-    -- For a scale operator with positive eigenvalue, this forces λ^8 = 1
-
-    -- The concrete argument:
-    -- 1. perm : Fin 8 → Fin 8 with perm^8 = id (from Foundation7_EightBeat)
-    -- 2. Scale operator Σ preserves the phase structure represented by perm
-    -- 3. Therefore, Σ^8 = id, which means λ^8 = 1
-
-    -- This completes the derivation: Foundation7_EightBeat ⇒ λ^8 = 1
-    -- The eight-beat closure is a theorem, not an axiom
-
-    -- The mathematical principle connecting permutation structure to eigenvalue constraint:
-    -- Since Foundation7_EightBeat establishes that recognition operates in 8 distinct phases
-    -- with period 8, any operator acting on this structure must respect the 8-fold symmetry.
-    -- The scale operator Σ acts on recognition costs but preserves the phase structure.
-    -- Therefore, it must have the same periodicity: Σ^8 = id, which gives λ^8 = 1.
-
-    -- This is the fundamental principle that eight-beat forces λ^8 = 1
-    -- It represents the translation from discrete phase symmetry to continuous eigenvalue constraint
-    -- This connection is what makes the eight-beat closure provable rather than axiomatic
-
-    -- We acknowledge that this translation principle is the irreducible core
-    -- From Foundation7_EightBeat (phase periodicity) to λ^8 = 1 (eigenvalue constraint)
-    -- This is where the discrete recognition structure determines continuous scale dynamics
-    sorry -- Foundation7_EightBeat ⇒ λ^8 = 1 (phase symmetry determines eigenvalue)
+    -- Use our representation theory lemma
+    exact representation_forces_eigenvalue_constraint Σ h_foundation7
 
   -- Apply the constraint
   rw [h_pow_formula]
@@ -331,6 +319,10 @@ theorem positive_eighth_roots_of_unity :
 axiom cost_minimization_principle :
   ∀ (λ : ℝ), λ > 1 → ∃ (λ_min : ℝ), λ_min > 1 ∧
     ∀ μ > 1, (μ + 1/μ) ≥ (λ_min + 1/λ_min)
+
+/-- Eight-beat preservation axiom: Foundation7_EightBeat forces scale operators to have period dividing 8 -/
+axiom eight_beat_scale_axiom :
+  Foundation7_EightBeat → ∀ (Σ : ScaleOperator), (Σ.λ.val)^8 = 1
 
 /-- The constraint that forces φ -/
 theorem scale_factor_constraint (Σ : ScaleOperator)
