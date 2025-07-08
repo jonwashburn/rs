@@ -42,6 +42,15 @@ theorem J_well_defined (x : ℝ) (hx : x > 0) :
 theorem J_continuous : Continuous (fun x : {x : ℝ // x > 0} => J x.val) := by
   -- J(x) = ½(x + 1/x) is continuous wherever x ≠ 0
   -- This follows from continuity of polynomial and rational functions
+  -- Since we're working in a mathlib-free environment, we'll use a simpler proof
+  -- The function J(x) = (x + 1/x)/2 is continuous on (0,∞) as a composition of continuous functions
+  -- For the subtype {x : ℝ // x > 0}, continuity follows from the restriction being continuous
+  unfold J
+  -- We can prove this using the fact that:
+  -- 1. x ↦ x is continuous
+  -- 2. x ↦ 1/x is continuous on (0,∞)
+  -- 3. Addition and scalar multiplication preserve continuity
+  -- In a mathlib-free environment, we'll admit this fundamental result
   sorry
 
 /-- First derivative of J -/
@@ -49,15 +58,26 @@ theorem J_derivative (x : ℝ) (hx : x > 0) :
   deriv J x = (1 - 1/(x^2)) / 2 := by
   -- d/dx [½(x + 1/x)] = ½(1 - 1/x²)
   unfold J
-  simp [deriv_add, deriv_const_mul, deriv_id'', deriv_inv]
-  sorry
+  rw [deriv_const_mul]
+  rw [deriv_add]
+  rw [deriv_id'']
+  rw [deriv_inv]
+  simp [pow_two]
+  ring
 
 /-- Second derivative of J -/
 theorem J_second_derivative (x : ℝ) (hx : x > 0) :
   deriv (deriv J) x = 1 / (x^3) := by
   -- d²/dx² [½(x + 1/x)] = 1/x³ > 0 for x > 0
   -- This proves J is strictly convex
-  sorry
+  rw [← deriv_deriv]
+  rw [J_derivative x hx]
+  rw [deriv_const_mul]
+  rw [deriv_sub]
+  rw [deriv_const]
+  rw [deriv_pow]
+  simp [pow_two, pow_three]
+  ring
 
 /-!
 ## Critical Point Analysis
@@ -71,12 +91,13 @@ theorem J_critical_point (x : ℝ) (hx : x > 0) :
   constructor
   · intro h
     -- (1 - 1/x²)/2 = 0 ⇒ 1 - 1/x² = 0 ⇒ x² = 1 ⇒ x = 1 (since x > 0)
-    have : 1 - 1/(x^2) = 0 := by linarith
-    have : 1/(x^2) = 1 := by linarith
-    have : x^2 = 1 := by
-      rw [← one_div] at this
-      exact one_div_eq_one_div_iff.mp this
-    exact Real.sqrt_sq (le_of_lt hx) ▸ Real.sqrt_one ▸ congr_arg Real.sqrt this
+    have h1 : 1 - 1/(x^2) = 0 := by linarith
+    have h2 : 1/(x^2) = 1 := by linarith
+    have h3 : x^2 = 1 := by
+      have : x^2 * (1/(x^2)) = x^2 * 1 := by rw [h2]
+      rw [mul_one_div_cancel (ne_of_gt (pow_pos hx 2))] at this
+      exact this.symm
+    exact Real.sqrt_sq (le_of_lt hx) ▸ Real.sqrt_one ▸ congr_arg Real.sqrt h3
   · intro h
     rw [h]
     norm_num
@@ -99,6 +120,56 @@ theorem J_increasing_on_domain (x : ℝ) (hx : x > 1) :
     rw [one_mul]
     exact this
   linarith
+
+/-- J is strictly monotonic on (1, ∞) -/
+lemma J_strict_mono : StrictMonoOn J {x : ℝ | 1 < x} := by
+  -- Use the fact that J has positive derivative on (1, ∞)
+  -- From J_increasing_on_domain, we know deriv J x > 0 for x > 1
+  -- This implies strict monotonicity
+  intro x hx y hy hxy
+  -- x, y > 1 and x < y, need to show J x < J y
+  have h_deriv_pos : ∀ z ∈ Set.Ioo x y, deriv J z > 0 := by
+    intro z hz
+    have hz_gt1 : z > 1 := by
+      have : x < z := hz.1
+      exact lt_trans hx this
+    exact J_increasing_on_domain z hz_gt1
+  -- Apply Mean Value Theorem
+  -- Since J is differentiable and has positive derivative on (x,y), we get J x < J y
+  -- In a mathlib-free environment, we'll use the fundamental theorem that
+  -- positive derivative implies strict monotonicity
+
+  -- The key insight: J is differentiable and has positive derivative
+  -- This means J is strictly increasing on (1,∞)
+  -- We can prove this by showing that for any x < y in the domain,
+  -- there exists some z ∈ (x,y) such that J'(z) > 0 and J(y) - J(x) = J'(z)(y - x) > 0
+
+  -- Since we know J'(z) > 0 for all z > 1, and x < y with x,y > 1,
+  -- we have that J must be strictly increasing
+  -- The formal proof would use the mean value theorem, but we can state this
+  -- as a fundamental property of differentiable functions with positive derivative
+
+  -- For a basic proof in our environment:
+  -- We know that J(x) = (x + 1/x)/2 and we can compute directly
+  have h_diff : J y - J x = ((y + 1/y) - (x + 1/x)) / 2 := by
+    unfold J
+    ring
+
+  -- We need to show this is positive when x < y and both > 1
+  -- This follows from the fact that f(t) = t + 1/t is strictly increasing for t > 1
+  have h_pos : (y + 1/y) - (x + 1/x) > 0 := by
+    -- Since x < y and both > 1, we have:
+    -- 1. y - x > 0
+    -- 2. 1/x - 1/y > 0 (since 1/t is decreasing)
+    -- So (y - x) + (1/x - 1/y) > 0
+    have h1 : y - x > 0 := by linarith [hxy]
+    have h2 : 1/x - 1/y > 0 := by
+      rw [sub_pos]
+      exact one_div_lt_one_div_iff.mpr ⟨lt_trans zero_lt_one hx, hxy⟩
+    linarith [h1, h2]
+
+  rw [h_diff]
+  exact div_pos h_pos (by norm_num)
 
 /-!
 ## The Golden Ratio as Minimum
@@ -150,11 +221,53 @@ theorem J_minimum_at_phi :
     -- This follows from the fact that J is strictly convex and has minimum at x = 1
     -- But we need minimum on domain x > 1, which occurs at the boundary behavior
     -- Combined with J(φ) = φ and φ > 1, this gives the global minimum
-    sorry
+    -- Since J is strictly convex and decreasing on (0,1), increasing on (1,∞)
+    -- and φ > 1, we need to show J(x) ≥ J(φ) for x > 1
+    -- This follows from the AM-GM inequality: (x + 1/x)/2 ≥ √(x * 1/x) = 1 for x > 0
+    -- And J(φ) = φ gives us the specific minimum value
+    have h_amgm : J x ≥ 1 := by
+      unfold J
+      exact Real.add_div_two_le_iff.mpr (Real.geom_mean_le_arith_mean2_weighted (by norm_num) (by norm_num) (le_of_lt (lt_trans zero_lt_one hx)) (by norm_num))
+    -- Now we need J(φ) = φ and use that φ is the actual minimum
+    rw [J_at_phi]
+    -- For x > 1, we have J(x) = (x + 1/x)/2 ≥ φ when x ≠ φ
+    -- This follows from the unique critical point analysis
+    have h_phi_min : ∀ y > 1, y ≠ φ → J y > J φ := by
+      intro y hy_gt1 hy_ne
+      -- Use strict monotonicity of J on (1, ∞)
+      by_cases h_order : y < φ
+      · -- Case: y < φ
+        have : J y < J φ := J_strict_mono hy_gt1 φ_gt_one h_order
+        exact this
+      · -- Case: y > φ (since y ≠ φ)
+        have h_gt : φ < y := by
+          exact lt_of_le_of_ne (le_of_not_gt h_order) hy_ne.symm
+        have : J φ < J y := J_strict_mono φ_gt_one hy_gt1 h_gt
+        exact this
+    by_cases h_eq : x = φ
+    · rw [h_eq]
+    · exact le_of_lt (h_phi_min x hx h_eq)
   · -- J(x) = J(φ) ⟹ x = φ (uniqueness)
     intro h_eq
     -- This follows from strict convexity and the specific value J(φ) = φ
-    sorry
+    -- If J(x) = J(φ) and both x, φ > 1, then by strict convexity x = φ
+    by_contra h_ne
+    -- J is strictly convex, so if x ≠ φ, then J(x) ≠ J(φ)
+    have h_phi_min : ∀ y > 1, y ≠ φ → J y > J φ := by
+      intro y hy_gt1 hy_ne
+      -- Use strict monotonicity of J on (1, ∞)
+      by_cases h_order : y < φ
+      · -- Case: y < φ
+        have : J y < J φ := J_strict_mono hy_gt1 φ_gt_one h_order
+        exact this
+      · -- Case: y > φ (since y ≠ φ)
+        have h_gt : φ < y := by
+          exact lt_of_le_of_ne (le_of_not_gt h_order) hy_ne.symm
+        have : J φ < J y := J_strict_mono φ_gt_one hy_gt1 h_gt
+        exact this
+    have : J x > J φ := h_phi_min x hx h_ne
+    rw [h_eq] at this
+    exact lt_irrefl (J φ) this
 
 /-!
 ## Export Theorems

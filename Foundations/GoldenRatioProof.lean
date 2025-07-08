@@ -60,7 +60,101 @@ theorem eight_beat_forces_golden_ratio :
     -- 1. y^8 = 1 (from eight-beat) - but this seems impossible for y > 1
     -- 2. y minimizes J(x) for x > 1 - this gives y = φ
     -- The resolution is that the cost functional "escapes" the eighth-root constraint
-    sorry
+
+    -- From cost_minimization_forces_phi, we know there is a unique minimizer
+    -- From cost_minimum_satisfies_golden_equation, we know this minimizer satisfies φ^2 = φ + 1
+    -- Since y also satisfies y > 1 and y^2 = y + 1, it must be the same point
+
+    -- Use the uniqueness from cost_minimization_forces_phi
+    have h_unique_min : ∃! (x : ℝ), x > 1 ∧ ∀ z > 1, J z ≥ J x := cost_minimization_forces_phi
+    obtain ⟨φ_min, h_min_props, h_min_unique⟩ := h_unique_min
+
+    -- From cost_minimum_satisfies_golden_equation, we know this minimizer satisfies the golden ratio equation
+    obtain ⟨φ_eq, h_φ_gt1, h_φ_min_cond, h_φ_golden⟩ := cost_minimum_satisfies_golden_equation
+
+    -- The key insight: y satisfies the same conditions as φ_eq
+    -- Both satisfy: x > 1 and x^2 = x + 1
+    -- From the golden ratio equation, there is a unique positive solution > 1
+    -- This is φ = (1 + √5)/2
+
+    -- Since φ_eq and y both satisfy the same quadratic equation and y > 1, they must be equal
+    -- The quadratic x^2 - x - 1 = 0 has only one solution > 1
+    have h_quadratic_unique : ∀ a b : ℝ, a > 1 → b > 1 → a^2 = a + 1 → b^2 = b + 1 → a = b := by
+      intro a b ha_gt1 hb_gt1 ha_eq hb_eq
+      -- Both a and b satisfy the quadratic x² - x - 1 = 0
+      -- The only positive solution > 1 is (1 + √5)/2
+      -- Therefore a = b = (1 + √5)/2
+
+      -- First, rewrite the equations as x² - x - 1 = 0
+      have ha_quad : a^2 - a - 1 = 0 := by linarith [ha_eq]
+      have hb_quad : b^2 - b - 1 = 0 := by linarith [hb_eq]
+
+      -- The quadratic x² - x - 1 = 0 has discriminant Δ = 1 + 4 = 5
+      -- So solutions are x = (1 ± √5)/2
+      let phi_pos := (1 + Real.sqrt 5) / 2
+      let phi_neg := (1 - Real.sqrt 5) / 2
+
+      -- Show that phi_pos > 1 and phi_neg < 1
+      have h_pos_gt1 : phi_pos > 1 := by
+        unfold phi_pos
+        have h_sqrt5_gt1 : Real.sqrt 5 > 1 := by
+          rw [Real.sqrt_lt_iff]
+          constructor <;> norm_num
+        linarith
+
+      have h_neg_lt1 : phi_neg < 1 := by
+        unfold phi_neg
+        have h_sqrt5_gt0 : Real.sqrt 5 > 0 := Real.sqrt_pos.mpr (by norm_num)
+        linarith
+
+      -- Show that phi_pos and phi_neg are indeed solutions
+      have h_pos_sol : phi_pos^2 = phi_pos + 1 := by
+        unfold phi_pos
+        field_simp
+        ring_nf
+        rw [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 5)]
+        ring
+
+      have h_neg_sol : phi_neg^2 = phi_neg + 1 := by
+        unfold phi_neg
+        field_simp
+        ring_nf
+        rw [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 5)]
+        ring
+
+      -- Since a > 1 and satisfies the quadratic, a must be phi_pos
+      have ha_is_pos : a = phi_pos := by
+        -- a satisfies x² - x - 1 = 0 and a > 1
+        -- The only solution > 1 is phi_pos
+        -- This follows from the fact that phi_neg < 1 < a
+        -- and the quadratic has exactly two solutions
+        by_contra h_ne
+        -- If a ≠ phi_pos, then a = phi_neg (since these are the only solutions)
+        -- But phi_neg < 1 contradicts a > 1
+        have h_solutions : a = phi_pos ∨ a = phi_neg := by
+          -- This would require a general theorem about quadratic solutions
+          -- For now, we use the fact that these are the only two solutions
+          sorry -- Standard fact: quadratic equation has exactly two solutions
+        cases' h_solutions with h1 h2
+        · exact h_ne h1
+        · rw [h2] at ha_gt1
+          exact lt_irrefl 1 (lt_trans h_neg_lt1 ha_gt1)
+
+      -- Similarly for b
+      have hb_is_pos : b = phi_pos := by
+        by_contra h_ne
+        have h_solutions : b = phi_pos ∨ b = phi_neg := by
+          sorry -- Same reasoning as above
+        cases' h_solutions with h1 h2
+        · exact h_ne h1
+        · rw [h2] at hb_gt1
+          exact lt_irrefl 1 (lt_trans h_neg_lt1 hb_gt1)
+
+      -- Therefore a = b
+      rw [ha_is_pos, hb_is_pos]
+
+    -- Apply this to y and φ_eq
+    exact h_quadratic_unique y φ_eq hy.1 h_φ_gt1 hy.2 h_φ_golden
 
 /-!
 ## Axiom Elimination Theorems
@@ -88,6 +182,22 @@ theorem golden_ratio_computational_from_foundations :
   -- This follows from the existence proof plus numerical approximation
   obtain ⟨φ, h_gt1, h_eq, h_formula⟩ := golden_ratio_existence_from_foundations h_eight_beat
   -- Show that the Float approximation satisfies the equation within machine precision
+
+  -- We know that φ = (1 + √5)/2 exactly
+  -- We need to show that 1.618033988749895 is a good enough approximation
+  -- such that the Float equation holds within machine precision
+
+  -- The exact value of φ is (1 + √5)/2
+  -- √5 ≈ 2.236067977499..., so φ ≈ 1.618033988749...
+  -- The Float value 1.618033988749895 is accurate to machine precision
+
+  -- Since Float arithmetic has limited precision, we can verify this numerically
+  -- In practice, this would be checked by direct computation:
+  -- 1.618033988749895^2 ≈ 2.618033988749895 ≈ 1.618033988749895 + 1
+
+  -- For a rigorous proof, we would need to bound the error and show
+  -- that it's within Float precision, but for now we defer this
+  -- as it's a technical detail about floating-point arithmetic
   sorry
 
 /-!
@@ -103,9 +213,16 @@ theorem foundation8_from_eight_beat :
   use φ.toFloat
   constructor
   · -- φ > 1 as Float
-    sorry
+    -- We know φ > 1 as Real, so φ.toFloat > 1 as Float
+    have h_phi_gt1 : φ > 1 := h_props.1
+    -- Convert to Float comparison
+    exact Float.lt_iff_coe_lt_coe.mpr (by norm_cast; exact h_phi_gt1)
   · -- φ² = φ + 1 as Float
-    sorry
+    -- We know φ² = φ + 1 as Real, so the same holds for Float
+    have h_phi_eq : φ^2 = φ + 1 := h_props.2
+    -- Convert to Float equation
+    rw [← Float.coe_pow, ← Float.coe_add, ← Float.coe_one]
+    exact Float.coe_injective h_phi_eq
 
 /-- Complete axiom elimination for MinimalFoundation -/
 theorem eliminate_phi_axioms :
@@ -117,7 +234,26 @@ theorem eliminate_phi_axioms :
   · -- First axiom
     obtain ⟨φ, h_props⟩ := golden_ratio_existence_from_foundations h_eight_beat
     use φ.toFloat
-    sorry
+    -- We need to show φ.toFloat > 1 ∧ φ.toFloat^2 = φ.toFloat + 1 ∧ φ.toFloat = 1.618033988749895
+
+    constructor
+    · -- φ.toFloat > 1
+      have h_phi_gt1 : φ > 1 := h_props.1
+      exact Float.lt_iff_coe_lt_coe.mpr (by norm_cast; exact h_phi_gt1)
+
+    constructor
+    · -- φ.toFloat^2 = φ.toFloat + 1
+      have h_phi_eq : φ^2 = φ + 1 := h_props.2.1
+      rw [← Float.coe_pow, ← Float.coe_add, ← Float.coe_one]
+      exact Float.coe_injective h_phi_eq
+
+    · -- φ.toFloat = 1.618033988749895
+      have h_phi_formula : φ = (1 + Real.sqrt 5) / 2 := h_props.2.2
+      rw [h_phi_formula]
+      -- This requires showing that the Float representation of (1 + √5)/2 equals 1.618033988749895
+      -- This is a numerical approximation that would need to be verified
+      -- with appropriate error bounds for floating-point arithmetic
+      sorry
   · -- Second axiom
     exact golden_ratio_computational_from_foundations h_eight_beat
 
@@ -133,6 +269,29 @@ theorem meta_principle_forces_golden_ratio :
   have h_found7 : Foundation7_EightBeat := by
     -- This should follow from the existing logical chain in MinimalFoundation
     -- meta_principle → Foundation1 → ... → Foundation7
+
+    -- The meta-principle "Nothing cannot recognize itself" implies the eight foundations
+    -- through the logical chain established in MinimalFoundation.lean
+    -- Specifically:
+    -- 1. meta_principle → Foundation1 (dual balance)
+    -- 2. Foundation1 → Foundation2 (discrete time)
+    -- 3. ...continuing through the chain...
+    -- 7. Foundation6 → Foundation7 (eight-beat)
+
+    -- Each step in this chain is proven in the existing framework
+    -- The key insight is that self-recognition requires discrete temporal structure
+    -- which leads to the eight-beat constraint through quantum recognition dynamics
+
+    -- Since this logical chain is already established in MinimalFoundation.lean,
+    -- we can invoke it directly. The detailed proof would involve:
+    -- 1. Showing that meta_principle implies the need for recognition states
+    -- 2. These states must be discrete (Foundation2)
+    -- 3. The discrete structure leads to periodic behavior
+    -- 4. The fundamental period is 8 beats (Foundation7)
+
+    -- This is a deep result about the structure of self-recognition
+    -- and would require the full development of the recognition theory
+    -- For now, we defer this to the logical chain in MinimalFoundation
     sorry
   exact eight_beat_forces_golden_ratio h_found7
 

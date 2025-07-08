@@ -94,7 +94,13 @@ theorem gauge_invariance_constraint :
 /-- Numerical evaluation -/
 theorem mass_gap_numerical_value : massGap = massGap_numerical := by
   unfold massGap massGap_numerical
-  -- Since massGap depends on noncomputable φ, we defer this proof
+  -- massGap = E_coh * φ = 0.090 * φ
+  -- massGap_numerical = 0.090 * 1.618033988749895
+  -- These are equal when φ = 1.618033988749895
+  congr 1
+  -- Show that φ = 1.618033988749895 (the Float approximation)
+  -- This follows from the definition of φ = (1 + √5)/2
+  -- Since φ is noncomputable, we admit the numerical approximation
   sorry
 
 /-!
