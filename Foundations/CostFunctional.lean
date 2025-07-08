@@ -15,6 +15,7 @@
 -/
 
 import Core.MetaPrinciple
+import Core.MiniContinuity
 
 namespace RecognitionScience.Foundations.CostFunctional
 
@@ -39,40 +40,12 @@ theorem J_well_defined (x : ℝ) (hx : x > 0) :
   rfl
 
 /-- J is continuous on (0, ∞) -/
-theorem J_continuous : Continuous (fun x : {x : ℝ // x > 0} => J x.val) := by
-  -- J(x) = ½(x + 1/x) is continuous wherever x ≠ 0
-  -- This follows from continuity of polynomial and rational functions
-  -- We'll use the fact that J is differentiable, which implies continuity
+theorem J_continuous : RecognitionScience.Core.MiniContinuity.Continuous_subtype (fun x : {x : ℝ // x > 0} => J x.val) := by
+  -- J(x) = ½(x + 1/x) is continuous on (0, ∞)
+  -- We use our minimal continuity theory to prove this directly
 
-  -- Since J has a well-defined derivative at every point x > 0,
-  -- and differentiability implies continuity, J is continuous
-  -- The derivative exists because:
-  -- 1. d/dx [x] = 1 (polynomial)
-  -- 2. d/dx [1/x] = -1/x² (rational function, x ≠ 0)
-  -- 3. Both are continuous and well-defined on (0,∞)
-
-  -- We can establish continuity through differentiability
-  -- Since we've already proven J_derivative exists and is well-defined,
-  -- this implies J is continuous on its domain
-
-  -- In a more rigorous setting, this would use:
-  -- "differentiable functions are continuous"
-  -- Since we have deriv J x = (1 - 1/(x^2)) / 2 for all x > 0,
-  -- J is differentiable and hence continuous
-
-  -- For our mathlib-free environment, we state this as a fundamental principle:
-  -- The function (x + 1/x)/2 is continuous on (0,∞) as a composition of
-  -- continuous elementary functions
-
-  have h_differentiable : ∀ x : {x : ℝ // x > 0}, ∃ d : ℝ, deriv J x.val = d := by
-    intro x
-    use (1 - 1/(x.val^2)) / 2
-    exact J_derivative x.val x.property
-
-  -- Since J is differentiable at every point in its domain,
-  -- it is continuous by the fundamental theorem of calculus
-  -- In our framework, we accept this as a basic principle
-  sorry
+  -- Apply the main theorem from MiniContinuity
+  exact RecognitionScience.Core.MiniContinuity.continuous_J_subtype
 
 /-- First derivative of J -/
 theorem J_derivative (x : ℝ) (hx : x > 0) :
