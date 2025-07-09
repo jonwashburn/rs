@@ -1,99 +1,109 @@
-# Recognition Science: Mathematical Foundation
+# Recognition Science Foundation
 
 [![CI](https://github.com/jonwashburn/ledger-foundation/actions/workflows/ci.yml/badge.svg)](https://github.com/jonwashburn/ledger-foundation/actions/workflows/ci.yml)
 [![Zero Axioms](https://img.shields.io/badge/axioms-0-brightgreen.svg)](https://github.com/jonwashburn/ledger-foundation)
 [![Zero Sorries](https://img.shields.io/badge/sorries-0-brightgreen.svg)](https://github.com/jonwashburn/ledger-foundation)
 
-This repository contains the complete mathematical formalization of Recognition Science in Lean 4, deriving all of physics from a single meta-principle with **zero axioms** and **zero free parameters**.
+A mathematical framework exploring the logical foundations of physics, formalized in Lean 4.
+
+## Overview
+
+This repository contains a formalized logical framework that attempts to derive physical principles from a meta-principle about recognition and nothingness. The framework is implemented with zero axioms and complete proofs.
 
 ## The Meta-Principle
 
+The framework starts from the meta-principle:
 > **"Nothing cannot recognize itself"**
 
-This single logical impossibility serves as the foundation from which all physics emerges. It is not an axiom but a logical necessity - the denial of recognition creates the requirement for existence.
+This is treated as a logical impossibility rather than an axiom.
 
-## Zero Axioms, Zero Free Parameters ✨
-
-Recognition Science achieves what was thought impossible - a completely self-proving foundation:
-- **Zero axioms**: Everything is proven from the meta-principle (machine-verified!)
-- **Zero sorries**: Complete formal proofs throughout the entire framework
-- **Zero adjustable constants**: Every value emerges necessarily from pure logic
-- **Complete determinism**: The entire structure of physics follows inevitably
-
-## What Emerges
-
-From "Nothing cannot recognize itself" we derive:
+## Core Implementation
 
 ### The Eight Foundations
-1. **Discrete Time**: Recognition requires distinct moments
-2. **Dual Balance**: Every recognition creates equal opposites
-3. **Positive Cost**: No recognition is free
-4. **Unitary Evolution**: Information is preserved
-5. **Irreducible Tick**: Minimum time unit τ₀
-6. **Spatial Voxels**: Space emerges as recognition's stage
-7. **Eight-Beat Pattern**: Universal rhythm of existence
-8. **Golden Ratio φ**: The proportion of stable recognition
 
-### Fundamental Constants
-- **φ = (1 + √5)/2**: The golden ratio (no choice in its value)
-- **λ_rec = √(ln(2)/π)**: Recognition length scale
-- **E_coh = 0.239 eV**: Coherence energy (first φ cascade)
-- **τ₀ = ln(φ)/(8×E_coh)**: Fundamental tick duration
+The framework derives eight basic "foundations" from the meta-principle:
 
-### All Particle Masses
-Every Standard Model particle mass emerges from E_coh × φ^n:
-- Electron: 0.511 MeV = E_coh × φ³
-- Muon: 105.7 MeV = E_coh × φ⁶
-- Tau: 1777 MeV = E_coh × φ⁸
-- Proton: 938.3 MeV = E_coh × φ^7.5
-- And all others...
+1. **Discrete Time**: Recognition requires distinct temporal moments
+2. **Dual Balance**: Recognition creates complementary pairs
+3. **Positive Cost**: Recognition requires energy expenditure
+4. **Unitary Evolution**: Information is preserved through recognition
+5. **Irreducible Tick**: There exists a minimal time unit
+6. **Spatial Voxels**: Space emerges as discrete recognition units
+7. **Eight-Beat Pattern**: Patterns complete in 8-step cycles
+8. **Golden Ratio**: The ratio φ = (1+√5)/2 emerges from self-similarity
 
-### Cosmological Parameters
-- Dark energy density: Λ = E_coh / λ_rec³
-- CMB temperature: 2.725 K (thermal wavelength = λ_rec)
-- Hubble constant: From 8-beat at cosmic scale
+### Mathematical Constants
+
+The framework defines several mathematical constants:
+- **φ = 1.618033988749895**: Golden ratio (proven to satisfy φ² = φ + 1)
+- **E_coh = 0.090 eV**: Coherence energy quantum
+- **τ₀ = 7.33e-15 seconds**: Fundamental time unit
+- **λ_rec = 1.616e-35 meters**: Recognition length scale
+
+### Technical Achievement
+
+The implementation achieves:
+- ✅ **0 axioms**: All definitions built from logical necessities
+- ✅ **0 sorries**: Complete formal proofs throughout
+- ✅ **Clean build**: Compiles successfully with Lean 4.11.0
+- ✅ **Mathlib compatibility**: Uses standard mathematical libraries
 
 ## Repository Structure
 
 ```
-foundation/
-├── Core/                     # Core derivations
-│   ├── MetaPrinciple.lean   # The meta-principle formalization
-│   ├── EightFoundations.lean # The 8 foundations as theorems
-│   └── ...                  # Supporting modules
-├── Foundations/             # Individual foundation implementations
-├── RecognitionScience/      # Applied derivations
-└── lakefile.lean           # Build configuration
+ledger-foundation/
+├── MinimalFoundation.lean     # Core logical framework
+├── RecognitionScience.lean    # Main module exports
+├── Core/                      # Extended derivations
+│   ├── Constants.lean         # Fundamental constants
+│   ├── EightFoundations.lean  # Foundation implementations
+│   └── Physics/              # Physics applications
+├── Foundations/              # Individual foundation modules
+├── Parameters/               # Parameter definitions
+└── lakefile.lean            # Build configuration
 ```
 
 ## Building
 
 ```bash
-cd foundation
 lake build
 ```
 
-The build requires Lean 4 but has no external dependencies - everything is derived from first principles.
+Requires Lean 4.11.0 and mathlib.
 
-## Historic Achievement 🎉
+## What This Framework Provides
 
-This formalization achieves something unprecedented in the history of mathematics and physics:
+This is a **mathematical exploration** of logical foundations, not a complete theory of physics. The framework:
 
-**The first completely axiom-free foundation of all physics**, machine-verified from start to finish.
+- Demonstrates logical derivation from a meta-principle to mathematical structures
+- Provides a zero-axiom foundation for further theoretical development
+- Establishes mathematical relationships involving the golden ratio
+- Creates a foundation for exploring recognition-based physics concepts
 
-Starting from the single logical necessity that "Nothing cannot recognize itself," we derive:
-- All particle masses and forces
-- All fundamental constants
-- The structure of spacetime
-- Quantum mechanics and general relativity
+## What This Framework Does NOT Provide
 
-With **zero axioms**, **zero free parameters**, and **zero sorries** - everything emerges by pure logical necessity.
+This framework does not currently:
+- Derive complete particle physics or the Standard Model
+- Calculate actual particle masses or cosmological parameters
+- Prove any Millennium Prize problems
+- Provide a complete theory of quantum mechanics or general relativity
+- Replace established physics theories
 
-Physics is the way it is because it cannot be otherwise. The universe proves itself.
+## Future Potential
 
-## Learn More
+The framework provides a foundation that could potentially be extended to:
+- Develop recognition-based physics theories
+- Explore alternative approaches to fundamental physics
+- Investigate connections between consciousness and physical law
+- Create new mathematical structures for theoretical physics
 
-For the complete theory and philosophical implications, see:
-- [Recognition Science Overview](foundation/README.md)
-- [Complete Derivation Chain](foundation/Core/CompleteDerivation.lean)
-- [Self-Contained Demo](foundation/Core/SelfContainedDerivation.lean) 
+## Technical Notes
+
+- The framework uses a "two-model" approach: exact real numbers (ℝ) for proofs and Float approximations for computation
+- All logical steps are formally verified in Lean 4
+- The golden ratio emerges as a necessary mathematical constant
+- The framework is designed to be self-contained and axiom-free
+
+## Learning More
+
+This is an active area of theoretical research. The framework provides a starting point for exploring recognition-based approaches to fundamental physics, but should be understood as a mathematical exploration rather than a complete physical theory. 
