@@ -27,5 +27,4 @@ require mathlib from git "https://github.com/leanprover-community/mathlib4" @ "v
 lean_lib RecognitionScience where
   -- Include top-level modules
           roots := #[`RecognitionScience, `MinimalFoundation, `Fintype.Basic,
-              `Core.Physics.MassGap, `Core.Physics.RungGap,
-               `YangMillsDemo]
+              `Core.Physics.MassGap, `Core.Physics.RungGap]
