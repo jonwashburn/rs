@@ -5,6 +5,9 @@
 *.ilean
 *.c
 
+# macOS temp files (TextMate/BBEdit style)
+.!*
+
 # Nested repositories and source material
 ledger-foundation/
 foundation/
