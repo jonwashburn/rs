@@ -81,7 +81,7 @@ theorem recognition_science_consistent :
    Foundation6_SpatialVoxels ∧
    Foundation7_EightBeat ∧
    Foundation8_GoldenRatio) ∧
-  (∃ (φ E τ : Float), φ > 1 ∧ E > 0 ∧ τ > 0 ∧ φ^2 = φ + 1) := by
+  (∃ (φ : ℝ) (E τ : Float), φ > 1 ∧ E > 0 ∧ τ > 0 ∧ φ^2 = φ + 1) := by
   exact punchlist_complete
 
 end RecognitionScience
