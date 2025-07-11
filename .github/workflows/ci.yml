@@ -37,11 +37,11 @@ jobs:
           exit 1
         fi
         
-        # Count total sorries
-        TOTAL_SORRIES=$(grep -r "sorry" *.lean | wc -l)
+        # Count total sorries in .lean files only
+        TOTAL_SORRIES=$(grep -h "sorry" *.lean 2>/dev/null | wc -l || echo "0")
         
         # Count intentional sorries (with explanatory comments)
-        INTENTIONAL_SORRIES=$(grep -r "sorry.*intentional" *.lean | wc -l)
+        INTENTIONAL_SORRIES=$(grep -h "sorry.*intentional" *.lean 2>/dev/null | wc -l || echo "0")
         
         echo "Found $TOTAL_SORRIES total sorry statements"
         echo "Found $INTENTIONAL_SORRIES intentional sorry statements"
