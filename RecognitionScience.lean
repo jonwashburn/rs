@@ -26,6 +26,25 @@ export RecognitionScience.Minimal (Foundation5_IrreducibleTick Foundation6_Spati
 export RecognitionScience.Minimal (φ E_coh τ₀ lambda_rec)
 export RecognitionScience.Minimal (zero_free_parameters punchlist_complete)
 
+-- Model Nothing as Empty
+inductive Nothing : Type where
+
+-- Recognition as injective relation (set of pairs)
+def Recognition (A B : Type) : Prop :=
+  ∃ (R : Set (A × B)), (∀ a1 a2 b, (a1, b) ∈ R ∧ (a2, b) ∈ R → a1 = a2) ∧ ¬ (R = ∅)  -- Injective and non-empty
+
+-- Meta-principle for Nothing
+theorem meta_principle : ¬ Recognition Nothing Nothing := by
+  intro h
+  obtain ⟨R, h_inj, h_nonempty⟩ := h
+  -- R ⊆ Nothing × Nothing = ∅, so R = ∅
+  have : R = ∅ := by
+    intro p
+    intro hp
+    exact Set.mem_empty_eq _ |>.mp hp
+  -- Contradicts h_nonempty
+  exact h_nonempty this
+
 /-!
 # Overview
 
