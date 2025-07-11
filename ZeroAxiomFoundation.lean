@@ -106,7 +106,6 @@ def fib : MyNat → MyNat
 /-- Proof that Fibonacci numbers are always positive -/
 theorem fib_pos : ∀ n : MyNat, fib n ≠ MyNat.zero := by
   intro n
-  -- Simple proof by cases on the definition
   cases n with
   | zero =>
     simp [fib]
