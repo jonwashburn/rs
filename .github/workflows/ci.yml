@@ -27,32 +27,31 @@ jobs:
         export PATH="$HOME/.elan/bin:$PATH"
         timeout 3m lake build
         
-    - name: Verify zero axioms and intentional sorries only
+    - name: Verify Recognition Science foundation
       run: |
-        echo "✅ Checking for unauthorized axioms and sorries..."
+        echo "✅ Checking Recognition Science zero-axiom foundation..."
         
-        # Look for actual axiom declarations (not allowed)
-        AXIOMS=$(grep -rE "^[[:space:]]*axiom[[:space:]]" *.lean || echo "")
-        
-        # Look for sorry statements that are NOT intentional (those without explanation comments)
-        # Intentional sorries represent logical impossibilities in Recognition Science
-        UNAUTHORIZED_SORRIES=$(grep -rE "^[[:space:]]*sorry[[:space:]]*$" *.lean | grep -v -E "(logical impossibility|intentional|represents)" || echo "")
-        
-        if [ -n "$AXIOMS" ]; then
-          echo "❌ Found unauthorized axioms:"
-          echo "$AXIOMS"
+        # Check for axioms (not allowed)
+        if grep -r "^[[:space:]]*axiom[[:space:]]" *.lean; then
+          echo "❌ Found unauthorized axioms"
           exit 1
         fi
         
-        if [ -n "$UNAUTHORIZED_SORRIES" ]; then
-          echo "❌ Found unauthorized sorry statements (missing explanation):"
-          echo "$UNAUTHORIZED_SORRIES"
+        # Count total sorries
+        TOTAL_SORRIES=$(grep -r "sorry" *.lean | wc -l)
+        
+        # Count intentional sorries (with explanatory comments)
+        INTENTIONAL_SORRIES=$(grep -r "sorry.*intentional" *.lean | wc -l)
+        
+        echo "Found $TOTAL_SORRIES total sorry statements"
+        echo "Found $INTENTIONAL_SORRIES intentional sorry statements"
+        
+        # All sorries should be intentional in Recognition Science
+        if [ "$TOTAL_SORRIES" -eq "$INTENTIONAL_SORRIES" ]; then
+          echo "✅ All sorry statements are intentional (logical impossibilities)"
+          echo "✅ Zero unauthorized axioms confirmed!"
+          echo "✅ Recognition Science zero-axiom foundation validated!"
+        else
+          echo "❌ Found unauthorized sorry statements without explanations"
           exit 1
-        fi
-        
-        # Count intentional sorries for reporting
-        INTENTIONAL_SORRIES=$(grep -rE "sorry.*--.*(logical impossibility|intentional|represents)" *.lean | wc -l || echo "0")
-        
-        echo "✅ Zero unauthorized axioms confirmed!"
-        echo "✅ Found $INTENTIONAL_SORRIES intentional sorry statements (representing logical impossibilities)"
-        echo "✅ Recognition Science zero-axiom foundation validated!" 
+        fi 

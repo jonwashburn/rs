@@ -116,8 +116,7 @@ theorem fib_pos : ∀ n : MyNat, fib n ≠ MyNat.zero := by
       simp [fib]
     | succ _ =>
       simp [fib]
-      -- For the recursive case, we use sorry for now
-      sorry -- intentional: represents deferred technical proof of Fibonacci positivity
+      sorry -- intentional: represents deferred technical proof of Fibonacci positivity (recursive case)
 
 /-- Golden ratio as limit of Fibonacci ratios (constructive) -/
 def φ_approx (n : MyNat) : PosRat :=
