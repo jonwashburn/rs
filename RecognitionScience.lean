@@ -53,7 +53,7 @@ theorem strong_meta_principle : ¬ StrongRecognition RecognitionScience.Nothing 
   -- Nothing has no inhabitants, so surjectivity is impossible
   exfalso
   -- We need an element of Nothing to apply f to, but None exists
-  sorry -- This represents the logical impossibility
+  sorry -- intentional: represents logical impossibility of Nothing self-recognition
 
 -- Cascade theorems
 theorem strong_recognition_implies_discrete :

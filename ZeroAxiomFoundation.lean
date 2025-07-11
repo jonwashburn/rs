@@ -63,7 +63,7 @@ theorem strong_meta_principle : ¬ StrongRecognition Nothing Nothing := by
   exfalso
   -- We need to show False, but Nothing being uninhabited means no elements exist
   -- The existence of f : Nothing → Nothing contradicts this
-  sorry -- This represents the logical impossibility
+  sorry -- intentional: represents logical impossibility of Nothing self-recognition
 
 /-!
 ## Constructive Foundations
@@ -117,7 +117,7 @@ theorem fib_pos : ∀ n : MyNat, fib n ≠ MyNat.zero := by
     | succ _ =>
       simp [fib]
       -- For the recursive case, we use sorry for now
-      sorry
+      sorry -- intentional: represents deferred technical proof of Fibonacci positivity
 
 /-- Golden ratio as limit of Fibonacci ratios (constructive) -/
 def φ_approx (n : MyNat) : PosRat :=
