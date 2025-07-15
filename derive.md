@@ -24,9 +24,9 @@ The following list documents modules, principles, or claims in the current code-
    *File:* `Foundations/IrreducibleTick.lean`  
    *Status:* Complete derivation from meta-principle showing tick irreducibility through temporal injectivity, building on Foundation 1's discrete time structure.
 
-6. **Foundation 6 – Spatial Voxels**  
+6. **Foundation 6 – Spatial Voxels** ✅ **COMPLETE**  
    *File:* `Foundations/SpatialVoxels.lean`  
-   *Issue:* Defines voxel lattice; no derivation showing discreteness of space is necessary.
+   *Status:* Complete derivation from meta-principle showing spatial discretization through finite signal speed constraints and voxel lattice structure.
 
 7. **Foundation 7 – Eight-Beat Pattern**  
    *File:* `Foundations/EightBeat.lean`  
