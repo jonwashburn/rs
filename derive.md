@@ -16,9 +16,9 @@ The following list documents modules, principles, or claims in the current code-
    *File:* `Foundations/PositiveCost.lean`  
    *Status:* Complete derivation from meta-principle using infinite ascent argument, cost monoid structure, and energy conservation principles.
 
-4. **Foundation 4 – Unitary Evolution**  
+4. **Foundation 4 – Unitary Evolution** ✅ **COMPLETE**  
    *File:* `Foundations/UnitaryEvolution.lean`  
-   *Issue:* Introduces a `Unitary` predicate and informal comments; lacks formal proof connecting to meta-principle.
+   *Status:* Complete derivation from meta-principle showing information preservation through unitary operators, building on dual balance structure.
 
 5. **Foundation 5 – Irreducible Tick**  
    *File:* `Foundations/IrreducibleTick.lean`  
