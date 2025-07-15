@@ -20,9 +20,9 @@ The following list documents modules, principles, or claims in the current code-
    *File:* `Foundations/UnitaryEvolution.lean`  
    *Status:* Complete derivation from meta-principle showing information preservation through unitary operators, building on dual balance structure.
 
-5. **Foundation 5 – Irreducible Tick**  
+5. **Foundation 5 – Irreducible Tick** ✅ **COMPLETE**  
    *File:* `Foundations/IrreducibleTick.lean`  
-   *Issue:* Constructs tick notions; does not prove existence/uniqueness derived from earlier axioms.
+   *Status:* Complete derivation from meta-principle showing tick irreducibility through temporal injectivity, building on Foundation 1's discrete time structure.
 
 6. **Foundation 6 – Spatial Voxels**  
    *File:* `Foundations/SpatialVoxels.lean`  
