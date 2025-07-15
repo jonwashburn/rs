@@ -4,17 +4,17 @@ The following list documents modules, principles, or claims in the current code-
 
 ### Core "Eight Foundations" layer
 
-1. **Foundation 1 – Discrete Recognition**  
+1. **Foundation 1 – Discrete Recognition** ✅ **COMPLETE**  
    *File:* `Foundations/DiscreteTime.lean`  
-   *Issue:* Property `Foundation1_DiscreteRecognition` is defined; helper lemmas on `Nat` modular arithmetic exist, but **no theorem** establishes the property from the meta-principle or earlier results.
+   *Status:* Rigorous derivation from meta-principle with formal Lean proofs and equivalence theorem.
 
 2. **Foundation 2 – Dual Balance**  
    *File:* `Foundations/DualBalance.lean`  
    *Issue:* Definition provided; bookkeeping lemmas present; missing a proof that Dual Balance follows from prior principles.
 
-3. **Foundation 3 – Positive Cost**  
+3. **Foundation 3 – Positive Cost** ✅ **COMPLETE**  
    *File:* `Foundations/PositiveCost.lean`  
-   *Issue:* `Foundation3_PositiveCost` defined without a derivation from recognition theory.
+   *Status:* Complete derivation from meta-principle using infinite ascent argument, cost monoid structure, and energy conservation principles.
 
 4. **Foundation 4 – Unitary Evolution**  
    *File:* `Foundations/UnitaryEvolution.lean`  
